@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 require('express-async-errors')
 
 const bloodDonorRouter = require('./controllers/bloodDonor')
+const bloodRequirementRouter = require('./controllers/bloodRequirement')
 const middleware = require('./utils/middleware')
 
 mongoose.set('strictQuery', false)
@@ -27,6 +28,7 @@ app.use(express.json())
 app.use(middleware.requestLogger)
 
 app.use('/api/donate', bloodDonorRouter)
+app.use('/api/require', bloodRequirementRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

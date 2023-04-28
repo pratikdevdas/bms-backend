@@ -1,19 +1,20 @@
 const bloodDonorRouter = require('express').Router()
-const Require = require('`../models/bloodRequire')
+const Require = require('../models/bloodRequire')
+const Donate = require('../models/bloodDonate')
 const nodemailer = require('nodemailer')
-const Mailgen = require('mailgen')
-const path = require('path')
-const validator = require('email-validator')
+// const Mailgen = require('mailgen')
+// const path = require('path')
+// const validator = require('email-validator')
 
 bloodDonorRouter.get('/', async (request, response) => {
   const require = await Require.find({})
   response.json(require)
 })
 
-bloodDonorRouter.post('/', (request, response) => {
+bloodDonorRouter.post('/', async(request, response) => {
   const body = request.body
   const require = new Require({ ...body })
-  const pocEmail = body.email
+  const donate = await Donate.find({ group:body.group })
 
   let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -23,43 +24,23 @@ bloodDonorRouter.post('/', (request, response) => {
     },
   })
 
-  let MailGenerator = new Mailgen({
-    theme: {
-      path: path.resolve('theme.html'),
-    },
-    product: {
-      name: 'Icamp',
-      link: 'https://www.instagram.com/ecell_kiit/',
-      company: body.name
-    },
-  })
 
-  let mail = MailGenerator.generate({ body:{} })
 
-  let message = {
-    from: process.env.EMAIL_USER,
-    to: pocEmail,
-    subject: 'Thank You for posting your blood',
-    html: mail,
+  console.log(donate.length)
+  if(donate.length !== 0){
+    let message = {
+      from: process.env.EMAIL_USER,
+      to: body.email,
+      subject: 'Your Blood is available',
+      text: `Dear ${body.name},\n\nYour blood request is available. Kindly contact ${donate[0].name} with number ${donate[0].phone} for your blood.\n\nBest Regards,\nTech Team,\nTeam 1`,
+    }
+    await transporter.sendMail(message)
+    return response.status(200).json({ success:'Your blood is already available. Kindly check FIND BLOOD. Also, we have again sent contact details over your mail.' })
   }
 
-  if (!body.name || !body.website ) {
-    return response.status(400).json({
-      error: 'name or website missing'
-    })
-  }
-
-  // email validator
-  if(!validator.validate(body.email)){
-    return response.status(400).json({
-      error: 'Wrong  email'
-    })
-  }
-
-  require
+  await require
     .save()
-    .then(() => transporter.sendMail(message))
-    .then(() => response.status(200).json({ success: 'successful' }))
+    .then(() => response.status(200).json({ success: 'Successfully saved your requirement.' }))
     .catch((err) => {
       if(err.code === 11000){
         return response.status(400).json({

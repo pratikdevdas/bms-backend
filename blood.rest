@@ -12,7 +12,20 @@ content-type: application/json
 {
     "name": "Reds Stripjkle ioio Foods",
   "email": "thefarerevenant@gmail.com",
-  "group": "String",
+  "group": "O+",
+  "gender": "String",
+  "phone": "456",
+  "age": 12
+}
+
+###
+POST http://localhost:3002/api/require/
+content-type: application/json
+
+{
+    "name": "dasfda",
+  "email": "thefarerevenant@gmail.com",
+  "group": "O+",
   "gender": "String",
   "phone": "456",
   "age": 12
