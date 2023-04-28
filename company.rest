@@ -1,0 +1,63 @@
+### Fetch Company with ID 
+GET http://localhost:3001/api/companies/
+
+### All Companies
+GET http://localhost:3002/api/donate/
+
+### Post Requests
+
+POST http://localhost:3002/api/donate/
+content-type: application/json
+
+{
+    "name": "Reds Stripjkle ioio Foods",
+  "email": "thefarerevenant@gmail.com",
+  "group": "String",
+  "gender": "String",
+  "phone": "456",
+  "age": 12
+}
+
+###delete with id
+DELETE http://localhost:3001/api/companies/:id
+
+
+### update with id (more to be done in routes)
+PUT http://localhost:3001/api/companies/:id
+content-type: application/json 
+
+{
+    "name": "samplrefefrefrgegegvgnadsczcdcmee",
+    "number": "4379r793fvvcdsgg79"
+}
+
+
+### Deployed post request
+POST http://localhost:3002/api/companies/
+content-type: application/json
+
+{
+    "name": "rdsa",
+    "website": "www.redocdsea.com",
+    "location": "Dante Kan",
+    "poc": {
+        "name" : "Revens",
+        "phone": "3213213",
+        "email": "2147009@kic.in"
+    },
+    "internshipDetails":{
+        "duration": {
+            "min" : 2,
+            "max" : 4
+        },
+        "stipend": {
+            "min" : 1000,
+            "max" : 8000
+        },
+        "domains":["tech","design"],
+        "skills":["javascript","react","figma","canva"]
+    },
+    "additionalPerks":["accomodation"],
+    "mode":"online",
+    "ppo": true
+}
